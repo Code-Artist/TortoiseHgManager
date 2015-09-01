@@ -160,7 +160,7 @@ namespace TortoiseHgManager
             lbErrorCounts.Text = string.Empty;
             lbCounter.Text = string.Empty;
             ThreadCount = cbThreads.Enabled ? Convert.ToInt32(cbThreads.SelectedItem.ToString()) : 1;
-            ErrorRepos.Clear();
+            if(cbFunctions.SelectedItem.ToString() != "Fix Repositories") ErrorRepos.Clear();
 
             UpdateControl(true);
 
@@ -268,13 +268,22 @@ namespace TortoiseHgManager
         }
         private void Function_FixRepositories()
         {
-            Trace.WriteLine("Fixing " + ErrorRepos.Count() + " repositories...");
-            while (ErrorRepos.Count() != 0)
+            if(ErrorRepos.Count == 0)
             {
+                Trace.WriteLine("No problematic repositories detected. Run 'Verify Repositories' first.");
+            }
+            Trace.WriteLine("Fixing " + ErrorRepos.Count() + " repositories...");
+
+            List<string> NeedRepair = new List<string>();
+            NeedRepair.AddRange(ErrorRepos);
+            while (NeedRepair.Count() != 0)
+            {
+                string target = NeedRepair[0];
                 if (UserAborted) return;
-                string result = hg.FixRepository(ErrorRepos[0]);
-                UpdateStatus(ErrorRepos[0], result);
-                if (result == "OK") ErrorRepos.RemoveAt(0);
+                string result = hg.FixRepository(target);
+                UpdateStatus(target, result);
+                if (result == "OK") ErrorRepos.Remove(target);
+                NeedRepair.RemoveAt(0); //Remove repository regardless whether it had been fixed.
             };
         }
         private void Function_PullIncomingChanges()

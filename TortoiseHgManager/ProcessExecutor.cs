@@ -236,21 +236,25 @@ namespace TortoiseHgManager
         }
         private void process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
+            //ToDo: Review exception : "Source array was not long enough. Check srcIndex and length, and the array's lower bounds."
             if (e.Data != null)
             {
+                string data = e.Data;
                 errorDetected = true;
-                if (RedirectToFile) System.IO.File.AppendAllText(LogFile, e.Data + "\r\n");
-                else outputData.Add(e.Data);
-                if (TraceLogEnabled) Trace.WriteLine(Name + ": " + e.Data);
+                if (RedirectToFile) System.IO.File.AppendAllText(LogFile, data + "\r\n");
+                else outputData.Add(data);
+                if (TraceLogEnabled) Trace.WriteLine(Name + ": " + data);
             }
         }
         private void process_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
+            //ToDo: Review exception : "Source array was not long enough. Check srcIndex and length, and the array's lower bounds."
             if (e.Data != null)
             {
-                if (RedirectToFile) System.IO.File.AppendAllText(LogFile, e.Data + "\r\n");
-                else outputData.Add(e.Data);
-                if (TraceLogEnabled) Trace.WriteLine(Name + ": " + e.Data);
+                string data = e.Data;
+                if (RedirectToFile) System.IO.File.AppendAllText(LogFile, data + "\r\n");
+                else outputData.Add(data);
+                if (TraceLogEnabled) Trace.WriteLine(Name + ": " + data);
             }
         }
 
