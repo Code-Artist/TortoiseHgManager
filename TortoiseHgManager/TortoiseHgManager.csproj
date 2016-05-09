@@ -69,6 +69,10 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TortoiseHgClient.cs" />
+    <Compile Include="TortoiseHgException.cs" />
+    <Compile Include="TriStateTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="FailedRepoDialog.resx">
       <DependentUpon>FailedRepoDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -95,6 +99,24 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GreenDot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GreyDot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LightGreenDot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OrangeDot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RedDot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\YellowDot.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

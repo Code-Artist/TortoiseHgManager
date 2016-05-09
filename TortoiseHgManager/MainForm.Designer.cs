@@ -29,14 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Node3");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Node0", new System.Windows.Forms.TreeNode[] {
+            treeNode1});
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Node1");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Node2");
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.btStart = new System.Windows.Forms.Button();
             this.btStop = new System.Windows.Forms.Button();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.dgRepo = new System.Windows.Forms.DataGridView();
-            this.colRepositories = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.diagnosticsTextBox1 = new CodeArtEng.Diagnostics.Controls.DiagnosticsTextBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lbCounter = new System.Windows.Forms.ToolStripStatusLabel();
             this.progressBar1 = new System.Windows.Forms.ToolStripProgressBar();
@@ -47,19 +49,24 @@
             this.cbFunctions = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.threadWorker = new System.ComponentModel.BackgroundWorker();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.txtRepoFilter = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.diagnosticsTextBox1 = new CodeArtEng.Diagnostics.Controls.DiagnosticsTextBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.lstRepos = new RikTheVeggie.TriStateTreeView();
+            this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.label4 = new System.Windows.Forms.Label();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.repoProperties = new System.Windows.Forms.PropertyGrid();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            this.statusStrip1.SuspendLayout();
+            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgRepo)).BeginInit();
-            this.statusStrip1.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // errorProvider1
@@ -69,7 +76,7 @@
             // btStart
             // 
             this.btStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btStart.Location = new System.Drawing.Point(588, 4);
+            this.btStart.Location = new System.Drawing.Point(766, 4);
             this.btStart.Name = "btStart";
             this.btStart.Size = new System.Drawing.Size(46, 26);
             this.btStart.TabIndex = 4;
@@ -80,7 +87,7 @@
             // btStop
             // 
             this.btStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btStop.Location = new System.Drawing.Point(635, 4);
+            this.btStop.Location = new System.Drawing.Point(813, 4);
             this.btStop.Name = "btStop";
             this.btStop.Size = new System.Drawing.Size(46, 26);
             this.btStop.TabIndex = 4;
@@ -88,60 +95,21 @@
             this.btStop.UseVisualStyleBackColor = true;
             this.btStop.Click += new System.EventHandler(this.btStop_Click);
             // 
-            // splitContainer1
+            // diagnosticsTextBox1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 69);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.dgRepo);
-            this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(3);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.diagnosticsTextBox1);
-            this.splitContainer1.Panel2.Padding = new System.Windows.Forms.Padding(3);
-            this.splitContainer1.Size = new System.Drawing.Size(684, 391);
-            this.splitContainer1.SplitterDistance = 190;
-            this.splitContainer1.TabIndex = 7;
-            // 
-            // dgRepo
-            // 
-            this.dgRepo.AllowUserToAddRows = false;
-            this.dgRepo.AllowUserToDeleteRows = false;
-            this.dgRepo.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.dgRepo.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgRepo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgRepo.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colRepositories,
-            this.colStatus});
-            this.dgRepo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgRepo.Location = new System.Drawing.Point(3, 3);
-            this.dgRepo.Name = "dgRepo";
-            this.dgRepo.ReadOnly = true;
-            this.dgRepo.RowHeadersVisible = false;
-            this.dgRepo.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgRepo.Size = new System.Drawing.Size(678, 184);
-            this.dgRepo.TabIndex = 1;
-            // 
-            // colRepositories
-            // 
-            this.colRepositories.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colRepositories.HeaderText = "Repositories";
-            this.colRepositories.Name = "colRepositories";
-            this.colRepositories.ReadOnly = true;
-            this.colRepositories.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // colStatus
-            // 
-            this.colStatus.HeaderText = "Satus";
-            this.colStatus.Name = "colStatus";
-            this.colStatus.ReadOnly = true;
-            this.colStatus.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.diagnosticsTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.diagnosticsTextBox1.FlushEnabled = false;
+            this.diagnosticsTextBox1.ListenerEnabled = false;
+            this.diagnosticsTextBox1.Location = new System.Drawing.Point(5, 5);
+            this.diagnosticsTextBox1.Multiline = true;
+            this.diagnosticsTextBox1.Name = "diagnosticsTextBox1";
+            this.diagnosticsTextBox1.OutputFile = null;
+            this.diagnosticsTextBox1.ReadOnly = true;
+            this.diagnosticsTextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.diagnosticsTextBox1.Size = new System.Drawing.Size(603, 382);
+            this.diagnosticsTextBox1.TabIndex = 0;
+            this.diagnosticsTextBox1.WordWrap = false;
+            this.diagnosticsTextBox1.WriteFailed = false;
             // 
             // statusStrip1
             // 
@@ -151,7 +119,7 @@
             this.lbErrorCounts});
             this.statusStrip1.Location = new System.Drawing.Point(3, 460);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(684, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(862, 22);
             this.statusStrip1.TabIndex = 8;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -192,7 +160,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(684, 33);
+            this.panel1.Size = new System.Drawing.Size(862, 33);
             this.panel1.TabIndex = 9;
             // 
             // cbThreads
@@ -237,55 +205,126 @@
             this.threadWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.threadWorker_DoWork);
             this.threadWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.threadWorker_RunWorkerCompleted);
             // 
-            // panel2
+            // splitContainer1
             // 
-            this.panel2.Controls.Add(this.txtRepoFilter);
-            this.panel2.Controls.Add(this.label3);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(3, 36);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(684, 33);
-            this.panel2.TabIndex = 2;
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(3, 36);
+            this.splitContainer1.Name = "splitContainer1";
             // 
-            // txtRepoFilter
+            // splitContainer1.Panel1
             // 
-            this.txtRepoFilter.Location = new System.Drawing.Point(63, 7);
-            this.txtRepoFilter.Name = "txtRepoFilter";
-            this.txtRepoFilter.Size = new System.Drawing.Size(362, 20);
-            this.txtRepoFilter.TabIndex = 12;
-            this.txtRepoFilter.TextChanged += new System.EventHandler(this.txtRepoFilter_TextChanged);
+            this.splitContainer1.Panel1.Controls.Add(this.lstRepos);
+            this.splitContainer1.Panel1.Controls.Add(this.label4);
+            this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(3);
             // 
-            // label3
+            // splitContainer1.Panel2
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(5, 11);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(58, 13);
-            this.label3.TabIndex = 11;
-            this.label3.Text = "Repo Filter";
+            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
+            this.splitContainer1.Panel2.Padding = new System.Windows.Forms.Padding(3);
+            this.splitContainer1.Size = new System.Drawing.Size(862, 424);
+            this.splitContainer1.SplitterDistance = 231;
+            this.splitContainer1.TabIndex = 11;
             // 
-            // diagnosticsTextBox1
+            // lstRepos
             // 
-            this.diagnosticsTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.diagnosticsTextBox1.FlushEnabled = false;
-            this.diagnosticsTextBox1.ListenerEnabled = false;
-            this.diagnosticsTextBox1.Location = new System.Drawing.Point(3, 3);
-            this.diagnosticsTextBox1.Multiline = true;
-            this.diagnosticsTextBox1.Name = "diagnosticsTextBox1";
-            this.diagnosticsTextBox1.OutputFile = null;
-            this.diagnosticsTextBox1.ReadOnly = true;
-            this.diagnosticsTextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.diagnosticsTextBox1.Size = new System.Drawing.Size(678, 191);
-            this.diagnosticsTextBox1.TabIndex = 0;
-            this.diagnosticsTextBox1.WordWrap = false;
+            this.lstRepos.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstRepos.HideSelection = false;
+            this.lstRepos.ImageIndex = 0;
+            this.lstRepos.ImageList = this.imageList;
+            this.lstRepos.Location = new System.Drawing.Point(3, 23);
+            this.lstRepos.Name = "lstRepos";
+            treeNode1.Name = "Node3";
+            treeNode1.StateImageIndex = 0;
+            treeNode1.Text = "Node3";
+            treeNode2.Name = "Node0";
+            treeNode2.StateImageIndex = 0;
+            treeNode2.Text = "Node0";
+            treeNode3.Name = "Node1";
+            treeNode3.StateImageIndex = 0;
+            treeNode3.Text = "Node1";
+            treeNode4.Name = "Node2";
+            treeNode4.StateImageIndex = 0;
+            treeNode4.Text = "Node2";
+            this.lstRepos.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode2,
+            treeNode3,
+            treeNode4});
+            this.lstRepos.SelectedImageIndex = 0;
+            this.lstRepos.Size = new System.Drawing.Size(225, 398);
+            this.lstRepos.TabIndex = 1;
+            this.lstRepos.TriStateStyleProperty = RikTheVeggie.TriStateTreeView.TriStateStyles.Installer;
+            this.lstRepos.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.lstRepos_AfterCheck);
+            this.lstRepos.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.lstRepos_AfterSelect);
+            // 
+            // imageList
+            // 
+            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
+            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList.Images.SetKeyName(0, "GreyDot.png");
+            this.imageList.Images.SetKeyName(1, "LightGreenDot.png");
+            this.imageList.Images.SetKeyName(2, "GreenDot.png");
+            this.imageList.Images.SetKeyName(3, "YellowDot.png");
+            this.imageList.Images.SetKeyName(4, "OrangeDot.png");
+            this.imageList.Images.SetKeyName(5, "RedDot.png");
+            // 
+            // label4
+            // 
+            this.label4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label4.Location = new System.Drawing.Point(3, 3);
+            this.label4.Name = "label4";
+            this.label4.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.label4.Size = new System.Drawing.Size(225, 20);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Repositories";
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Alignment = System.Windows.Forms.TabAlignment.Bottom;
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(3, 3);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(621, 418);
+            this.tabControl1.TabIndex = 0;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.diagnosticsTextBox1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 4);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(5);
+            this.tabPage1.Size = new System.Drawing.Size(613, 392);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Logger";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.repoProperties);
+            this.tabPage2.Location = new System.Drawing.Point(4, 4);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(613, 392);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Properties";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // repoProperties
+            // 
+            this.repoProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.repoProperties.Location = new System.Drawing.Point(3, 3);
+            this.repoProperties.Name = "repoProperties";
+            this.repoProperties.Size = new System.Drawing.Size(607, 386);
+            this.repoProperties.TabIndex = 0;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(690, 485);
+            this.ClientSize = new System.Drawing.Size(868, 485);
             this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.statusStrip1);
             this.Name = "MainForm";
@@ -293,18 +332,18 @@
             this.Text = "TortoiseHg Repositories Verifier";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgRepo)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -315,10 +354,6 @@
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.Button btStart;
         private System.Windows.Forms.Button btStop;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.DataGridView dgRepo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colRepositories;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colStatus;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel lbCounter;
         private System.Windows.Forms.ToolStripProgressBar progressBar1;
@@ -328,11 +363,16 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cbThreads;
         private System.Windows.Forms.ComboBox cbFunctions;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.TextBox txtRepoFilter;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private CodeArtEng.Diagnostics.Controls.DiagnosticsTextBox diagnosticsTextBox1;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private RikTheVeggie.TriStateTreeView lstRepos;
+        private System.Windows.Forms.ImageList imageList;
+        private System.Windows.Forms.PropertyGrid repoProperties;
     }
 }
 
