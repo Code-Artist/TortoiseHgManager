@@ -359,6 +359,7 @@ namespace TortoiseHgManager
 
                 Parallel.For(0, Repositories.Length, taskOption, index =>
                 {
+                    if (UserAborted) return;
                     TortoiseHgRepository repository = Repositories[index];
                     UpdateStatus(repository, RepoStatus.Executing);
                     TortoiseHgClient hg = new TortoiseHgClient();
@@ -408,6 +409,7 @@ namespace TortoiseHgManager
 
                 Parallel.For(0, Repositories.Length, taskOption, index =>
                 {
+                    if (UserAborted) return;
                     TortoiseHgRepository repository = Repositories[index];
                     UpdateStatus(repository, RepoStatus.Executing);
                     TortoiseHgClient hg = new TortoiseHgClient();
@@ -547,6 +549,7 @@ namespace TortoiseHgManager
 
                 Parallel.For(0, Repositories.Length, taskOption, index =>
                 {
+                    if (UserAborted) return;
                     TortoiseHgRepository repository = Repositories[index];
                     UpdateStatus(repository, RepoStatus.Executing);
                     TortoiseHgClient hg = new TortoiseHgClient();
