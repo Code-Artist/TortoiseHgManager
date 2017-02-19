@@ -171,7 +171,7 @@ namespace TortoiseHgManager
             if (!File.Exists(mercurialINIPath)) throw new FileNotFoundException("File Not Found!", mercurialINIPath);
 
             string[] lines = File.ReadAllLines(mercurialINIPath);
-            foreach(string line in lines)
+            foreach (string line in lines)
             {
                 if (line.StartsWith(extension)) return;
             }
@@ -235,6 +235,27 @@ namespace TortoiseHgManager
 
             if (result.ExitCode != 0) RaiseTortoiseHgException("Push Changes", repositoryPath, String.Join("\r\n", result.Output));
             Trace.WriteLine("Push completed.");
+        }
+
+        public int CheckModifiedRepository(string repositoryPath)
+        {
+            Trace.WriteLine("Checking " + repositoryPath + "...");
+            Arguments = "--repository \"" + repositoryPath + "\" status";
+            ProcessResult result = Execute();
+
+            if (result.Output.Length != 0)
+            {
+                foreach (string line in result.Output)
+                {
+                    if (!line.StartsWith("?"))
+                    {
+                        Trace.WriteLine(repositoryPath + " contains uncommitted changes.");
+                        return -1;
+                    }
+                }
+            }
+            Trace.WriteLine(repositoryPath + " have no changes.");
+            return 0;
         }
 
         #endregion  
