@@ -28,15 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FailedRepoDialog));
             this.lstRepos = new System.Windows.Forms.ListBox();
             this.btOK = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lstRepos
             // 
-            this.lstRepos.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstRepos.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lstRepos.FormattingEnabled = true;
             this.lstRepos.Location = new System.Drawing.Point(12, 12);
             this.lstRepos.Name = "lstRepos";
@@ -62,6 +63,7 @@
             this.ClientSize = new System.Drawing.Size(443, 262);
             this.Controls.Add(this.btOK);
             this.Controls.Add(this.lstRepos);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FailedRepoDialog";

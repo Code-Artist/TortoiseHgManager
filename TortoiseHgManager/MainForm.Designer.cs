@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Node3");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Node0", new System.Windows.Forms.TreeNode[] {
             treeNode1});
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Node1");
             System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Node2");
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.btStart = new System.Windows.Forms.Button();
             this.btStop = new System.Windows.Forms.Button();
@@ -50,18 +50,20 @@
             this.label1 = new System.Windows.Forms.Label();
             this.threadWorker = new System.ComponentModel.BackgroundWorker();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.lstRepos = new RikTheVeggie.TriStateTreeView();
+            this.popUpMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.openWithTortoiseHgToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.btSelectNone = new System.Windows.Forms.Button();
+            this.btSelectAll = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.repoProperties = new System.Windows.Forms.PropertyGrid();
-            this.popUpMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.openWithTortoiseHgToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.btSelectAll = new System.Windows.Forms.Button();
-            this.btSelectNone = new System.Windows.Forms.Button();
-            this.lstRepos = new RikTheVeggie.TriStateTreeView();
+            this.cmdLineExecutor = new System.Windows.Forms.Timer(this.components);
+            this.btCmdLineBuilder = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -69,11 +71,11 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.popUpMenuStrip.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.popUpMenuStrip.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // errorProvider1
@@ -156,6 +158,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btCmdLineBuilder);
             this.panel1.Controls.Add(this.cbThreads);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.cbFunctions);
@@ -231,6 +234,53 @@
             this.splitContainer1.SplitterDistance = 231;
             this.splitContainer1.TabIndex = 11;
             // 
+            // lstRepos
+            // 
+            this.lstRepos.ContextMenuStrip = this.popUpMenuStrip;
+            this.lstRepos.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstRepos.HideSelection = false;
+            this.lstRepos.ImageIndex = 0;
+            this.lstRepos.ImageList = this.imageList;
+            this.lstRepos.Location = new System.Drawing.Point(3, 56);
+            this.lstRepos.Name = "lstRepos";
+            treeNode1.Name = "Node3";
+            treeNode1.StateImageIndex = 0;
+            treeNode1.Text = "Node3";
+            treeNode2.Name = "Node0";
+            treeNode2.StateImageIndex = 0;
+            treeNode2.Text = "Node0";
+            treeNode3.Name = "Node1";
+            treeNode3.StateImageIndex = 0;
+            treeNode3.Text = "Node1";
+            treeNode4.Name = "Node2";
+            treeNode4.StateImageIndex = 0;
+            treeNode4.Text = "Node2";
+            this.lstRepos.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode2,
+            treeNode3,
+            treeNode4});
+            this.lstRepos.SelectedImageIndex = 0;
+            this.lstRepos.Size = new System.Drawing.Size(225, 365);
+            this.lstRepos.TabIndex = 1;
+            this.lstRepos.TriStateStyleProperty = RikTheVeggie.TriStateTreeView.TriStateStyles.Installer;
+            this.lstRepos.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.lstRepos_AfterCheck);
+            this.lstRepos.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.lstRepos_AfterSelect);
+            this.lstRepos.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.lstRepos_NodeMouseClick);
+            // 
+            // popUpMenuStrip
+            // 
+            this.popUpMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openWithTortoiseHgToolStripMenuItem});
+            this.popUpMenuStrip.Name = "popUpMenuStrip";
+            this.popUpMenuStrip.Size = new System.Drawing.Size(191, 26);
+            // 
+            // openWithTortoiseHgToolStripMenuItem
+            // 
+            this.openWithTortoiseHgToolStripMenuItem.Name = "openWithTortoiseHgToolStripMenuItem";
+            this.openWithTortoiseHgToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.openWithTortoiseHgToolStripMenuItem.Text = "Open with TortoiseHg";
+            this.openWithTortoiseHgToolStripMenuItem.Click += new System.EventHandler(this.openWithTortoiseHgToolStripMenuItem_Click);
+            // 
             // imageList
             // 
             this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
@@ -241,6 +291,36 @@
             this.imageList.Images.SetKeyName(3, "YellowDot.png");
             this.imageList.Images.SetKeyName(4, "OrangeDot.png");
             this.imageList.Images.SetKeyName(5, "RedDot.png");
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.btSelectNone);
+            this.panel2.Controls.Add(this.btSelectAll);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(3, 23);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(225, 33);
+            this.panel2.TabIndex = 2;
+            // 
+            // btSelectNone
+            // 
+            this.btSelectNone.Location = new System.Drawing.Point(86, 4);
+            this.btSelectNone.Name = "btSelectNone";
+            this.btSelectNone.Size = new System.Drawing.Size(75, 23);
+            this.btSelectNone.TabIndex = 1;
+            this.btSelectNone.Text = "Select None";
+            this.btSelectNone.UseVisualStyleBackColor = true;
+            this.btSelectNone.Click += new System.EventHandler(this.btSelectNone_Click);
+            // 
+            // btSelectAll
+            // 
+            this.btSelectAll.Location = new System.Drawing.Point(5, 4);
+            this.btSelectAll.Name = "btSelectAll";
+            this.btSelectAll.Size = new System.Drawing.Size(75, 23);
+            this.btSelectAll.TabIndex = 0;
+            this.btSelectAll.Text = "Select All";
+            this.btSelectAll.UseVisualStyleBackColor = true;
+            this.btSelectAll.Click += new System.EventHandler(this.btSelectAll_Click);
             // 
             // label4
             // 
@@ -289,87 +369,27 @@
             // repoProperties
             // 
             this.repoProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.repoProperties.LineColor = System.Drawing.SystemColors.ControlDark;
             this.repoProperties.Location = new System.Drawing.Point(3, 3);
             this.repoProperties.Name = "repoProperties";
             this.repoProperties.Size = new System.Drawing.Size(607, 386);
             this.repoProperties.TabIndex = 0;
             // 
-            // popUpMenuStrip
+            // cmdLineExecutor
             // 
-            this.popUpMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openWithTortoiseHgToolStripMenuItem});
-            this.popUpMenuStrip.Name = "popUpMenuStrip";
-            this.popUpMenuStrip.Size = new System.Drawing.Size(191, 26);
+            this.cmdLineExecutor.Interval = 10;
+            this.cmdLineExecutor.Tick += new System.EventHandler(this.cmdLineExecutor_Tick);
             // 
-            // openWithTortoiseHgToolStripMenuItem
+            // btCmdLineBuilder
             // 
-            this.openWithTortoiseHgToolStripMenuItem.Name = "openWithTortoiseHgToolStripMenuItem";
-            this.openWithTortoiseHgToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
-            this.openWithTortoiseHgToolStripMenuItem.Text = "Open with TortoiseHg";
-            this.openWithTortoiseHgToolStripMenuItem.Click += new System.EventHandler(this.openWithTortoiseHgToolStripMenuItem_Click);
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.btSelectNone);
-            this.panel2.Controls.Add(this.btSelectAll);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(3, 23);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(225, 33);
-            this.panel2.TabIndex = 2;
-            // 
-            // btSelectAll
-            // 
-            this.btSelectAll.Location = new System.Drawing.Point(5, 4);
-            this.btSelectAll.Name = "btSelectAll";
-            this.btSelectAll.Size = new System.Drawing.Size(75, 23);
-            this.btSelectAll.TabIndex = 0;
-            this.btSelectAll.Text = "Select All";
-            this.btSelectAll.UseVisualStyleBackColor = true;
-            this.btSelectAll.Click += new System.EventHandler(this.btSelectAll_Click);
-            // 
-            // btSelectNone
-            // 
-            this.btSelectNone.Location = new System.Drawing.Point(86, 4);
-            this.btSelectNone.Name = "btSelectNone";
-            this.btSelectNone.Size = new System.Drawing.Size(75, 23);
-            this.btSelectNone.TabIndex = 1;
-            this.btSelectNone.Text = "Select None";
-            this.btSelectNone.UseVisualStyleBackColor = true;
-            this.btSelectNone.Click += new System.EventHandler(this.btSelectNone_Click);
-            // 
-            // lstRepos
-            // 
-            this.lstRepos.ContextMenuStrip = this.popUpMenuStrip;
-            this.lstRepos.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstRepos.HideSelection = false;
-            this.lstRepos.ImageIndex = 0;
-            this.lstRepos.ImageList = this.imageList;
-            this.lstRepos.Location = new System.Drawing.Point(3, 56);
-            this.lstRepos.Name = "lstRepos";
-            treeNode1.Name = "Node3";
-            treeNode1.StateImageIndex = 0;
-            treeNode1.Text = "Node3";
-            treeNode2.Name = "Node0";
-            treeNode2.StateImageIndex = 0;
-            treeNode2.Text = "Node0";
-            treeNode3.Name = "Node1";
-            treeNode3.StateImageIndex = 0;
-            treeNode3.Text = "Node1";
-            treeNode4.Name = "Node2";
-            treeNode4.StateImageIndex = 0;
-            treeNode4.Text = "Node2";
-            this.lstRepos.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2,
-            treeNode3,
-            treeNode4});
-            this.lstRepos.SelectedImageIndex = 0;
-            this.lstRepos.Size = new System.Drawing.Size(225, 365);
-            this.lstRepos.TabIndex = 1;
-            this.lstRepos.TriStateStyleProperty = RikTheVeggie.TriStateTreeView.TriStateStyles.Installer;
-            this.lstRepos.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.lstRepos_AfterCheck);
-            this.lstRepos.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.lstRepos_AfterSelect);
-            this.lstRepos.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.lstRepos_NodeMouseClick);
+            this.btCmdLineBuilder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btCmdLineBuilder.Location = new System.Drawing.Point(610, 4);
+            this.btCmdLineBuilder.Name = "btCmdLineBuilder";
+            this.btCmdLineBuilder.Size = new System.Drawing.Size(134, 26);
+            this.btCmdLineBuilder.TabIndex = 12;
+            this.btCmdLineBuilder.Text = "Command Line Builder";
+            this.btCmdLineBuilder.UseVisualStyleBackColor = true;
+            this.btCmdLineBuilder.Click += new System.EventHandler(this.btCmdLineBuilder_Click);
             // 
             // MainForm
             // 
@@ -379,10 +399,12 @@
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.statusStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(3);
             this.Text = "TortoiseHg Manager";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Shown += new System.EventHandler(this.MainForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -392,12 +414,12 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.popUpMenuStrip.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
-            this.popUpMenuStrip.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -432,6 +454,8 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button btSelectAll;
         private System.Windows.Forms.Button btSelectNone;
+        private System.Windows.Forms.Timer cmdLineExecutor;
+        private System.Windows.Forms.Button btCmdLineBuilder;
     }
 }
 

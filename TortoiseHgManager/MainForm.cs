@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Reflection;
+using CodeArtEng.Controls;
 
 namespace TortoiseHgManager
 {
@@ -43,7 +44,14 @@ namespace TortoiseHgManager
             public HgFunction Function { get; set; }
             public bool MultiThreading { get; set; }
             public bool PromptWarning { get; set; } = false;
+            public string CommandLineSwitch { get; set; }
         }
+
+        private CommandLineHelper CommandLine;
+        private bool CommandLineValid = false;
+        private List<string> CommandLineQueue = null;
+        private bool CloseAfterComplete = false;
+        private int CommandLineStatus = 0;
 
         #endregion
 
@@ -64,10 +72,114 @@ namespace TortoiseHgManager
             cbFunctions.Items.AddRange(HgFunctions.Keys.ToArray());
             cbFunctions.SelectedIndex = 0;
             LoadRepositories();
+
+            CommandLine = new CommandLineHelper(Text);
+            CommandLine.AddSwitch("/t", "Number of thread used for repositories operation [1 to 4]. Default = 1", "thread");
+
+            CommandLine.AddSwitch("/a", "Select all repositories.");
+            CommandLine.AddSwitch("/exclude-repo", "Exclude defined repositories and childs, separated by ';'. Can use with /a.", "repositories");
+            CommandLine.AddSwitch("/include-repo", "Include defined repositories and childs, separated by ';'.", "repositories");
+
+            CommandLine.AddSwitch("/v", "Verify Repositories");
+            CommandLine.AddSwitch("/f", "Fix Repositories.");
+            CommandLine.AddSwitch("/u", "Update Repositories");
+            CommandLine.AddSwitch("/pull", "Pull incoming changes from default path");
+            CommandLine.AddSwitch("/pull&update", "Pull incoming changes from default path, update local changes to tip revision");
+            CommandLine.AddSwitch("/push", "Push outgoing changes from default path.");
+            CommandLine.AddSwitch("/scan", "Check repositories for changes.");
+
+            CommandLine.AddSwitch("/min", "Start application in minimized mode.");
+
+            CommandLine.AddSwitch("/x", "Close application end of execution.");
+
+            CommandLineValid = CommandLine.ParseCommandLine();
 #if SIMULATION
             Text += " ~~~ SIMULATION ~~~";
             rand = new Random();
 #endif
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            if (CommandLineValid)
+            {
+                CommandLineQueue = new List<string>();
+
+                if (CommandLine.IsSwitchSet("/min")) this.WindowState = FormWindowState.Minimized;
+                if (CommandLine.IsSwitchSet("/x")) CloseAfterComplete = true;
+
+                //Thread
+                int threadCount = 1;
+                if (CommandLine.IsSwitchSet("/t"))
+                {
+                    if (Int32.TryParse(CommandLine.GetSwitchValue("/t", "1"), out threadCount))
+                    {
+                        if ((threadCount < 1) && (threadCount > 4))
+                        {
+                            Console.WriteLine("WARNING: Option /t value out of range --> [" + threadCount + "]. Default to 1!");
+                            threadCount = 1;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("WARNING: Invalid input value for /t: default to 1!");
+                        threadCount = 1;
+                    }
+                    cbThreads.SelectedIndex = cbThreads.Items.IndexOf(threadCount);
+                }
+
+                //Repositories
+                if (CommandLine.IsSwitchSet("/a"))
+                {
+                    SelectAllNodes();
+                }
+                if (CommandLine.IsSwitchSet("/include-repo"))
+                {
+                    string[] repos = CommandLine.GetSwitchValue("/include-repo").Split(';');
+                    foreach (string repo in repos) SelectNode(true, repo.Trim());
+                }
+                if (CommandLine.IsSwitchSet("/exclude-repo"))
+                {
+                    string[] repos = CommandLine.GetSwitchValue("/exclude-repo").Split(';');
+                    foreach (string repo in repos) SelectNode(false, repo.Trim());
+                }
+
+                //Functions
+                //ToDo: Create Queue, Generic Queue?
+                if (CommandLine.IsSwitchSet("/v")) CommandLineQueue.Add("/v");
+                if (CommandLine.IsSwitchSet("/f")) CommandLineQueue.Add("/f");
+                if (CommandLine.IsSwitchSet("/u")) CommandLineQueue.Add("/u");
+                if (CommandLine.IsSwitchSet("/pull")) CommandLineQueue.Add("/pull");
+                if (CommandLine.IsSwitchSet("/pull&update")) CommandLineQueue.Add("/pull&update");
+                if (CommandLine.IsSwitchSet("/push")) CommandLineQueue.Add("/push");
+                if (CommandLine.IsSwitchSet("/scan")) CommandLineQueue.Add("/scan");
+
+                if (CommandLineQueue.Count > 0) cmdLineExecutor.Enabled = true;
+            }//Command Line
+        }
+
+        private void cmdLineExecutor_Tick(object sender, EventArgs e)
+        {
+            cmdLineExecutor.Enabled = false;
+            if (CommandLineQueue.Count == 0)
+            {
+                CommandLineValid = false;
+
+                //Terminate application with exit code.
+                if (CloseAfterComplete)
+                {
+                    Trace.WriteLine("Application terminated with code " + CommandLineStatus);
+                    Environment.Exit(CommandLineStatus);
+                }
+                return;
+            }
+
+            string sw = CommandLineQueue.First();
+            CommandLineQueue.RemoveAt(0);
+            string hgFuncKey = HgFunctions.FirstOrDefault(x => x.Value.CommandLineSwitch == sw).Key;
+
+            cbFunctions.SelectedIndex = cbFunctions.Items.IndexOf(hgFuncKey);
+            btStart.PerformClick();
         }
 
         #region [ Private Functions ]
@@ -134,6 +246,7 @@ namespace TortoiseHgManager
             }
             SetNodeStatus(repository, status);
             if ((status == RepoStatus.Completed) || (status == RepoStatus.ERROR)) ProgressBarCountUp();
+            if (status == RepoStatus.ERROR) repository.Error = true;
             Application.DoEvents();
         }
 
@@ -151,7 +264,6 @@ namespace TortoiseHgManager
                 node.ImageIndex = node.SelectedImageIndex = imageIndex;
             }
         }
-
         private void SetNodeStatus(TortoiseHgRepository repo, RepoStatus status)
         {
             TreeNode node = FindNode(lstRepos.Nodes, repo);
@@ -186,6 +298,19 @@ namespace TortoiseHgManager
             node.Parent.ImageIndex = node.Parent.SelectedImageIndex = imageIndex;
         }
 
+        private TreeNode FindNodeByName(TreeNodeCollection nodes, string nodeName)
+        {
+            foreach (TreeNode node in nodes)
+            {
+                if (node.Name == nodeName) return node;
+                if (node.Nodes.Count > 0)
+                {
+                    TreeNode result = FindNodeByName(node.Nodes, nodeName);
+                    if (result != null) return result;
+                }
+            }
+            return null;
+        }
         private TreeNode FindNode(TreeNodeCollection nodes, TortoiseHgRepository repo)
         {
             foreach (TreeNode node in nodes)
@@ -262,22 +387,43 @@ namespace TortoiseHgManager
             }
 
             UpdateControl(false);
+            if (CommandLineValid && !UserAborted)
+            {
+                foreach (TortoiseHgRepository repo in hg.Repositories)
+                {
+                    if (repo.Error) CommandLineStatus = -1;
+                }
+                cmdLineExecutor.Enabled = true;
+            }
         }
+
         private void UpdateControl(bool started)
         {
             btStart.Enabled = !started;
+            btCmdLineBuilder.Enabled = !started;
             btStop.Enabled = started;
 
             cbFunctions.Enabled = !started;
             cbThreads.Enabled = (!started && HgFunctions[cbFunctions.SelectedItem.ToString()].MultiThreading);
         }
 
-        private void btSelectAll_Click(object sender, EventArgs e)
+        private void SelectAllNodes()
         {
             foreach (TreeNode node in lstRepos.Nodes)
             {
                 SelectNode(true, node);
             }
+        }
+        private void SelectNode(bool check, string nodeName)
+        {
+            TreeNode ptrNode = FindNodeByName(lstRepos.Nodes, nodeName);
+            if (ptrNode == null) return;
+            SelectNode(check, ptrNode);
+        }
+
+        private void btSelectAll_Click(object sender, EventArgs e)
+        {
+            SelectAllNodes();
         }
         private void btSelectNone_Click(object sender, EventArgs e)
         {
@@ -318,14 +464,14 @@ namespace TortoiseHgManager
         private void RegisterFunctions()
         {
             HgFunctions = new Dictionary<string, HgItem>();
-            HgFunctions.Add("Verify Repositories", new HgItem() { Function = Function_VerifyRepositories, MultiThreading = true });
-            HgFunctions.Add("Fix Repositories", new HgItem() { Function = Function_FixRepositories, MultiThreading = false, PromptWarning = true });
-            HgFunctions.Add("Update Repositories", new HgItem() { Function = Function_UpdateRepositories, MultiThreading = true, PromptWarning = true });
-            HgFunctions.Add("Pull Changes (default)", new HgItem() { Function = Function_PullIncomingChanges, MultiThreading = false });
-            HgFunctions.Add("Pull Changes (default) + Update", new HgItem() { Function = Function_PullIncomingChanges_Update, MultiThreading = false, PromptWarning = true });
-            HgFunctions.Add("Push Changes (default)", new HgItem() { Function = Function_PushOutgoingChanges, MultiThreading = false });
-            HgFunctions.Add("Push Changes (default) + Update", new HgItem() { Function = Function_PushOutgoingChanges_Update, MultiThreading = false, PromptWarning = true });
-            HgFunctions.Add("Check Repositories for Changes", new HgItem() { Function = Function_CheckRepositoriesForChanges, MultiThreading = true, PromptWarning = false });
+            HgFunctions.Add("Verify Repositories", new HgItem() { Function = Function_VerifyRepositories, MultiThreading = true, CommandLineSwitch = "/v" });
+            HgFunctions.Add("Fix Repositories", new HgItem() { Function = Function_FixRepositories, MultiThreading = false, PromptWarning = true, CommandLineSwitch = "/f" });
+            HgFunctions.Add("Update Repositories", new HgItem() { Function = Function_UpdateRepositories, MultiThreading = true, PromptWarning = true, CommandLineSwitch = "/u" });
+            HgFunctions.Add("Pull Changes (default)", new HgItem() { Function = Function_PullIncomingChanges, MultiThreading = false, CommandLineSwitch = "/pull" });
+            HgFunctions.Add("Pull Changes (default) + Update", new HgItem() { Function = Function_PullIncomingChanges_Update, MultiThreading = false, PromptWarning = true, CommandLineSwitch = "/pull&update" });
+            HgFunctions.Add("Push Changes (default)", new HgItem() { Function = Function_PushOutgoingChanges, MultiThreading = false, CommandLineSwitch = "/push" });
+            //HgFunctions.Add("Push Changes (default) + Update", new HgItem() { Function = Function_PushOutgoingChanges_Update, MultiThreading = false, PromptWarning = true });
+            HgFunctions.Add("Check Repositories for Changes", new HgItem() { Function = Function_CheckRepositoriesForChanges, MultiThreading = true, PromptWarning = false, CommandLineSwitch = "/scan" });
 
         }
         private void Function_VerifyRepositories()
@@ -334,7 +480,13 @@ namespace TortoiseHgManager
             {
                 foreach (TortoiseHgRepository repository in hg.Repositories.Where(x => x.Selected))
                 {
-                    if (UserAborted) return;
+                    if (UserAborted)
+                    {
+                        repository.Error = true;
+                        repository.ErrorString = "User Aborted!";
+                        UpdateStatus(repository, RepoStatus.ERROR);
+                        continue;
+                    }
                     UpdateStatus(repository, RepoStatus.Executing);
 
                     try
@@ -359,8 +511,14 @@ namespace TortoiseHgManager
 
                 Parallel.For(0, Repositories.Length, taskOption, index =>
                 {
-                    if (UserAborted) return;
                     TortoiseHgRepository repository = Repositories[index];
+                    if (UserAborted)
+                    {
+                        repository.Error = true;
+                        repository.ErrorString = "User Aborted!";
+                        UpdateStatus(repository, RepoStatus.ERROR);
+                        return;
+                    }
                     UpdateStatus(repository, RepoStatus.Executing);
                     TortoiseHgClient hg = new TortoiseHgClient();
                     hg.Name = Path.GetFileName(repository.Path);
@@ -384,7 +542,13 @@ namespace TortoiseHgManager
             {
                 foreach (TortoiseHgRepository repository in hg.Repositories.Where(x => x.Selected))
                 {
-                    if (UserAborted) return;
+                    if (UserAborted)
+                    {
+                        repository.Error = true;
+                        repository.ErrorString = "User Aborted!";
+                        UpdateStatus(repository, RepoStatus.ERROR);
+                        continue;
+                    }
                     UpdateStatus(repository, RepoStatus.Executing);
 
                     try
@@ -409,8 +573,14 @@ namespace TortoiseHgManager
 
                 Parallel.For(0, Repositories.Length, taskOption, index =>
                 {
-                    if (UserAborted) return;
                     TortoiseHgRepository repository = Repositories[index];
+                    if (UserAborted)
+                    {
+                        repository.Error = true;
+                        repository.ErrorString = "User Aborted!";
+                        UpdateStatus(repository, RepoStatus.ERROR);
+                        return;
+                    }
                     UpdateStatus(repository, RepoStatus.Executing);
                     TortoiseHgClient hg = new TortoiseHgClient();
                     hg.Name = Path.GetFileName(repository.Path);
@@ -432,7 +602,13 @@ namespace TortoiseHgManager
         {
             foreach (TortoiseHgRepository repository in hg.Repositories.Where(x => x.Selected))
             {
-                if (UserAborted) return;
+                if (UserAborted)
+                {
+                    repository.Error = true;
+                    repository.ErrorString = "User Aborted!";
+                    UpdateStatus(repository, RepoStatus.ERROR);
+                    continue;
+                }
                 UpdateStatus(repository, RepoStatus.Executing);
 
                 try
@@ -470,7 +646,13 @@ namespace TortoiseHgManager
         {
             foreach (TortoiseHgRepository repository in hg.Repositories.Where(x => x.Selected))
             {
-                if (UserAborted) return;
+                if (UserAborted)
+                {
+                    repository.Error = true;
+                    repository.ErrorString = "User Aborted!";
+                    UpdateStatus(repository, RepoStatus.ERROR);
+                    continue;
+                }
                 UpdateStatus(repository, RepoStatus.Executing);
 
                 try
@@ -500,7 +682,13 @@ namespace TortoiseHgManager
         {
             foreach (TortoiseHgRepository repository in hg.Repositories.Where(x => x.Selected))
             {
-                if (UserAborted) return;
+                if (UserAborted)
+                {
+                    repository.Error = true;
+                    repository.ErrorString = "User Aborted!";
+                    UpdateStatus(repository, RepoStatus.ERROR);
+                    continue;
+                }
                 UpdateStatus(repository, RepoStatus.Executing);
 
                 try
@@ -530,7 +718,7 @@ namespace TortoiseHgManager
                     try
                     {
                         int status = hg.CheckModifiedRepository(repository.Path);
-                        UpdateStatus(repository, status == 0? RepoStatus.Completed : RepoStatus.ERROR);
+                        UpdateStatus(repository, status == 0 ? RepoStatus.Completed : RepoStatus.ERROR);
                     }
                     catch (Exception ex)
                     {
@@ -549,8 +737,14 @@ namespace TortoiseHgManager
 
                 Parallel.For(0, Repositories.Length, taskOption, index =>
                 {
-                    if (UserAborted) return;
                     TortoiseHgRepository repository = Repositories[index];
+                    if (UserAborted)
+                    {
+                        repository.Error = true;
+                        repository.ErrorString = "User Aborted!";
+                        UpdateStatus(repository, RepoStatus.ERROR);
+                        return;
+                    }
                     UpdateStatus(repository, RepoStatus.Executing);
                     TortoiseHgClient hg = new TortoiseHgClient();
                     hg.Name = Path.GetFileName(repository.Path);
@@ -572,5 +766,71 @@ namespace TortoiseHgManager
 
         #endregion
 
+        private void btCmdLineBuilder_Click(object sender, EventArgs e)
+        {
+            CommandLine.Reset();
+            TortoiseHgRepository[] selectedRepos = GetSelectedRepos();
+            TortoiseHgRepository[] notSelectedRepos = GetNotSelectedRepos();
+
+            string[] selectedGroup = selectedRepos.Select(x => x.Group).Distinct().ToArray();
+            string[] notSelectedGroup = notSelectedRepos.Select(x => x.Group).Distinct().ToArray();
+
+            if (notSelectedGroup.Length == 0) CommandLine.SetSwitch("/A");
+            else
+            {
+                string[] mixStateGroup = selectedGroup.Intersect(notSelectedGroup).ToArray();
+                string[] exclusiveSelectedGroup = selectedGroup.Except(mixStateGroup).ToArray();
+                string[] exclusiveNotSelectedGroup = notSelectedGroup.Except(mixStateGroup).ToArray();
+
+                if(exclusiveSelectedGroup.Length > exclusiveNotSelectedGroup.Length)
+                {
+                    CommandLine.SetSwitch("/A");
+                    CommandLine.SetSwitch("/EXCLUDE-REPO", string.Join("; ", exclusiveNotSelectedGroup));
+                }
+                else
+                {
+                    CommandLine.SetSwitch("/INCLUDE-REPO", string.Join("; ", exclusiveSelectedGroup));
+                }
+
+                if (mixStateGroup.Length != 0)
+                {
+                    //Process mixStateGroup;
+                    List<TortoiseHgRepository> r = new List<TortoiseHgRepository>();
+                    foreach(string g in mixStateGroup)
+                    {
+                        r.AddRange(selectedRepos.Where(x => x.Group == g).ToArray());
+                    }
+                    string value = CommandLine.GetSwitchValue("/INCLUDE-REPO");
+                    if (!string.IsNullOrEmpty(value)) value += "; ";
+                    value += string.Join("; ", r.Select(x => x.ShortName));
+                    CommandLine.SetSwitch("/INCLUDE-REPO", value);
+                }
+
+            }
+            CommandLine.SetSwitch("/T", cbThreads.Text);
+            CommandLine.SetSwitch(HgFunctions[cbFunctions.Text].CommandLineSwitch.ToUpper());
+
+            CommandLine.ShowDialog();
+        }
+
+        private TortoiseHgRepository[] GetSelectedRepos()
+        {
+            List<TortoiseHgRepository> repos = new List<TortoiseHgRepository>();
+            foreach (TortoiseHgRepository repo in hg.Repositories)
+            {
+                if (repo.Selected) repos.Add(repo);
+            }
+            return repos.ToArray();
+        }
+
+        private TortoiseHgRepository[] GetNotSelectedRepos()
+        {
+            List<TortoiseHgRepository> repos = new List<TortoiseHgRepository>();
+            foreach (TortoiseHgRepository repo in hg.Repositories)
+            {
+                if (!repo.Selected) repos.Add(repo);
+            }
+            return repos.ToArray();
+        }
     }
 }

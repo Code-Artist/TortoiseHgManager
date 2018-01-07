@@ -1,0 +1,333 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CodeArtEng.Diagnostics</name>
+    </assembly>
+    <members>
+        <member name="T:CodeArtEng.Diagnostics.ProcessResult">
+            <summary>
+            Execution result returned from ProcessExecutor
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.ProcessResult.Output">
+            <summary>
+            Standard output lines.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.ProcessResult.ExitCode">
+            <summary>
+            Exit code return from process.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.ProcessResult.ErrorDetected">
+            <summary>
+            This flag is set if any stderr message is received.
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Diagnostics.ProcessResult.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:CodeArtEng.Diagnostics.ProcessExecutor">
+            <summary>
+            Execute Console based application without showing the console window.
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Diagnostics.ProcessExecutor.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="name">Instance name</param>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.ProcessExecutor.Name">
+            <summary>
+            Instance Name
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.ProcessExecutor.Application">
+            <summary>
+            Application EXE - Full path.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.ProcessExecutor.Arguments">
+            <summary>
+            Arguments that passed to application.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.ProcessExecutor.WorkingDirectory">
+            <summary>
+            Root Directory
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.ProcessExecutor.TraceLogEnabled">
+            <summary>
+            Enable / Disable Trace Log
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.ProcessExecutor.RedirectStandardInput">
+            <summary>
+            Enable / Disable input read from System.Diagnostics.Process.StandardInput stream.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.ProcessExecutor.ShowConsoleWindow">
+            <summary>
+            Show / Hide Console Window.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.ProcessExecutor.ProcessHandler">
+            <summary>
+            Get Process Handler for current execution. Return null if execution completed.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.ProcessExecutor.HasExited">
+            <summary>
+            Check if execution is completed.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.ProcessExecutor.DomainName">
+            <summary>
+            Gets or sets a value that identifies the domain to use when starting the process. Default value is current domain.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.ProcessExecutor.UserName">
+            <summary>
+            User name to execute process as different user.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.ProcessExecutor.Password">
+            <summary>
+            Password for assigned user.
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Diagnostics.ProcessExecutor.RedirectOutputToFile(System.String)">
+            <summary>
+            Redirect standard output and standrad error to file. By default, standard output and
+            standard error are stored in ProcessResult which returned at the end of Execute()
+            </summary>
+            <param name="logFile">Target file to store output logs.</param>
+        </member>
+        <member name="M:CodeArtEng.Diagnostics.ProcessExecutor.Execute(System.Boolean)">
+            <summary>
+            Execute process and return result in the form of ProcessResult.
+            </summary>
+            <remarks>No exception is expected from this application. Execution error will be reflected in ExitCode.</remarks>
+            <param name="waitForExit">Set to true to wait until process exit, else return once process started.</param>
+            <returns>Execution result as <see cref="T:CodeArtEng.Diagnostics.ProcessResult"/></returns>
+        </member>
+        <member name="M:CodeArtEng.Diagnostics.ProcessExecutor.Validate">
+            <summary>
+            Check if the specific tool exists.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CodeArtEng.Diagnostics.ProcessExecutor.Version(System.String)">
+            <summary>
+            Get tools version.
+            </summary>
+            <param name="command">Command to retrieve version number, e.g. "/?", "--version"</param>
+            <returns>Version information, null if not success.</returns>
+        </member>
+        <member name="M:CodeArtEng.Diagnostics.ProcessExecutor.Abort">
+            <summary>
+            Stop the current process and all its child process.
+            </summary>
+        </member>
+        <member name="E:CodeArtEng.Diagnostics.ProcessExecutor.Exited">
+            <summary>
+            Event raised when process is completed.
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Diagnostics.ProcessExecutor.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="T:CodeArtEng.Diagnostics.TraceFileWriterMode">
+            <summary>
+            <see cref="T:CodeArtEng.Diagnostics.TraceFileWriter"/> Operation Mode.
+            </summary>
+        </member>
+        <member name="F:CodeArtEng.Diagnostics.TraceFileWriterMode.Disabled">
+            <summary>
+            Disabled trace writting to file
+            </summary>
+        </member>
+        <member name="F:CodeArtEng.Diagnostics.TraceFileWriterMode.Normal">
+            <summary>
+            Recording traces to <see cref="P:CodeArtEng.Diagnostics.TraceFileWriter.OutputFile"/>
+            </summary>
+        </member>
+        <member name="F:CodeArtEng.Diagnostics.TraceFileWriterMode.Backup">
+            <summary>
+            Recording traces to <see cref="P:CodeArtEng.Diagnostics.TraceFileWriter.BackupOutputFile"/>.
+            <see cref="P:CodeArtEng.Diagnostics.TraceFileWriter.OutputFile"/> not accessible or offline.
+            </summary>
+        </member>
+        <member name="T:CodeArtEng.Diagnostics.TraceFileWriter">
+            <summary>
+            Output DEBUG and TRACE log to file.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.TraceFileWriter.OperationMode">
+            <summary>
+            Operation Mode.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.TraceFileWriter.OutputFile">
+            <summary>
+            Target output file. When writter failed to write to this file for whatever reason,
+            it will try to Write Traces to <see cref="P:CodeArtEng.Diagnostics.TraceFileWriter.BackupOutputFile"/> if defined. Else, trace capture will stop immediately.
+            </summary>
+            <remarks>Changing the value for this property caused <see cref="P:CodeArtEng.Diagnostics.TraceFileWriter.ListenerEnabled"/> set to FALSE.</remarks>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.TraceFileWriter.BackupOutputFile">
+            <summary>
+            Backup output target. Use only local path for this property. Trace will be output to this file when unable to write to <see cref="P:CodeArtEng.Diagnostics.TraceFileWriter.OutputFile"/>.
+            Writter will merge content to OutputFile and resume trace recording with OutputFile once it is available again.
+            Trace capture stop if failed to write to this file.
+            </summary>
+            <remarks>Changing the value for this property caused <see cref="P:CodeArtEng.Diagnostics.TraceFileWriter.ListenerEnabled"/> set to FALSE.</remarks>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.TraceFileWriter.RetryInterval_ms">
+            <summary>
+            Define how often the recovery loop should try to check if OutputFile is accesible once again.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.TraceFileWriter.ListenerEnabled">
+            <summary>
+            Enable / Disable Log Capture
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.TraceFileWriter.ShowTimeStamp">
+            <summary>
+            Enable / Disable printing time stamp in front of each message.
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Diagnostics.TraceFileWriter.#ctor">
+            <summary>
+            Enable / Disable TraceLogger.
+            </summary>
+        </member>
+        <member name="T:CodeArtEng.Diagnostics.TraceLoggerWrite">
+            <summary>
+            TraceLogger write() function callback
+            </summary>
+        </member>
+        <member name="T:CodeArtEng.Diagnostics.TraceLoggerFlush">
+            <summary>
+            TraceLogger flush() function callback
+            </summary>
+        </member>
+        <member name="T:CodeArtEng.Diagnostics.TraceLogger">
+            <summary>
+            A simple implementation of <see cref="T:System.Diagnostics.TraceListener"/>.
+            </summary>
+            <seealso cref="T:System.Diagnostics.TraceListener"/>
+        </member>
+        <member name="M:CodeArtEng.Diagnostics.TraceLogger.#ctor(CodeArtEng.Diagnostics.TraceLoggerWrite,CodeArtEng.Diagnostics.TraceLoggerFlush)">
+            <summary>
+            Initializes a new instance of <see cref="T:CodeArtEng.Diagnostics.TraceLogger"/>.
+            </summary>
+            <param name="writeCallback">Callback to TraceListener write function. Value can be null.</param>
+            <param name="flushCallback">Callback to TraceListener flush function. Value can be null.</param>
+        </member>
+        <member name="M:CodeArtEng.Diagnostics.TraceLogger.Write(System.String)">
+            <summary>
+            Received message from Trace source.
+            </summary>CRLF
+            <param name="message">Message received.</param>
+        </member>
+        <member name="M:CodeArtEng.Diagnostics.TraceLogger.WriteLine(System.String)">
+            <summary>
+            Receive message from Trace source followed by a line terminator.
+            </summary>
+            <param name="message">Message received.</param>
+        </member>
+        <member name="M:CodeArtEng.Diagnostics.TraceLogger.Flush">
+            <summary>
+            Flushes trace buffer.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.TraceLogger.Enabled">
+            <summary>
+            Enable / Disable TraceListener.
+            </summary>
+            <value>
+            <para><c>True</c> = Monitor trace listener activites.</para>
+            <para><c>False</c> = Suspend trace listener activities.</para>
+            </value>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.TraceLogger.ShowTimeStamp">
+            <summary>
+            Enable / Disable time stamp in log.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.TraceLogger.TimeStampFormat">
+            <summary>
+            Define date time display format. Use default format if undefined.
+            Time stamp is append in front of message when <see cref="P:CodeArtEng.Diagnostics.TraceLogger.ShowTimeStamp"/> is enabled.
+            </summary>
+        </member>
+        <member name="T:CodeArtEng.Diagnostics.Controls.DiagnosticsTextBox">
+            <summary>
+            Textbox with TraceListener
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Diagnostics.Controls.DiagnosticsTextBox.Dispose(System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="M:CodeArtEng.Diagnostics.Controls.DiagnosticsTextBox.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CodeArtEng.Diagnostics.Controls.DiagnosticsTextBox"/> class.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.Controls.DiagnosticsTextBox.ListenerEnabled">
+            <summary>
+            Enable / Disable trace listener to capture message from trace source.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.Controls.DiagnosticsTextBox.FlushEnabled">
+            <summary>
+            Gets or sets a value indicating whether control should response to Flush() command from trace source.
+            </summary>
+            <value>Ignore Flush() command if disabled, else clear all text in control.</value>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.Controls.DiagnosticsTextBox.ShowTimeStamp">
+            <summary>
+            Enable / Disable printing time stamp in front of each message.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.Controls.DiagnosticsTextBox.DisplayBufferSize">
+            <summary>
+            Define number of lines to be keep in text box. Set to 0 to keep all lines.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.Controls.DiagnosticsTextBox.OutputFile">
+            <summary>
+            Output trace to file. Set to a valid path to enable this option.
+            Disabled automatically when failed to write output.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.Controls.DiagnosticsTextBox.OutputFileBackup">
+            <summary>
+            Configure secondary output path for trace output as backup when failed to write to OutputFile. Recommend to use local path which is guaranteed to be available.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.Controls.DiagnosticsTextBox.WriteToFile">
+            <summary>
+            This flag is set to true when writting to <see cref="P:CodeArtEng.Diagnostics.Controls.DiagnosticsTextBox.OutputFile"/> failed.
+            Set to false to re-enable output log.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Diagnostics.Controls.DiagnosticsTextBox.Text">
+            <summary>
+            Return the current text from the TextBox. 
+            </summary>
+        </member>
+    </members>
+</doc>

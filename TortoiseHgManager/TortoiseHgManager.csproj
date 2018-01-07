@@ -36,9 +36,15 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>TortoiseManager.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CodeArtEng.Diagnostics">
-      <HintPath>..\..\..\ClassLibraryNET\CodeArtEng\CodeArtEng.Diagnostics\CodeArtEng.Diagnostics\bin\Release\CodeArtEng.Diagnostics.dll</HintPath>
+    <Reference Include="CodeArtEng.Controls, Version=2.1.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodeArtEng.Controls.2.1.8\lib\CodeArtEng.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="CodeArtEng.Diagnostics, Version=3.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodeArtEng.Diagnostics.3.1.5\lib\CodeArtEng.Diagnostics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -90,6 +96,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -117,6 +124,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\YellowDot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TortoiseManager.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
