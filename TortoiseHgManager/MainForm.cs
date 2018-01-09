@@ -351,9 +351,11 @@ namespace TortoiseHgManager
         {
             UserAborted = true;
             UpdateControl(false);
+            CommandLineStatus = -9;
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Environment.ExitCode = CommandLineStatus;
             diagnosticsTextBox1.ListenerEnabled = false;
         }
         private static int GetNumberOfCores() { return Environment.ProcessorCount; }
