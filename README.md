@@ -13,6 +13,5 @@ More details explanation on CodeProject: [TortoiseHg Manager Repository Verifica
 - V3.3.0: Added output log to file.
 - V3.2.0: Added command line support.
 
-<br/>
----
-<p style="text-align: center;">Created by [Code Art Engineering](http://www.codearteng.com)</p>
+
+-- *Created by [Code Art Engineering](http://www.codearteng.com)* --
