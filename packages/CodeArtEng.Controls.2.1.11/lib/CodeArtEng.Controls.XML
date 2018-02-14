@@ -1117,17 +1117,6 @@
             </summary>
             <param name="fileName">Selected file path.</param>
         </member>
-        <member name="T:System.Windows.Forms.FormExtension">
-            <summary>
-            <see cref="T:System.Windows.Forms.Form"/> class extension.
-            </summary>
-        </member>
-        <member name="M:System.Windows.Forms.FormExtension.SetAppIcon(System.Windows.Forms.Form)">
-            <summary>
-            Set from Icon with application Icon.
-            </summary>
-            <param name="form"></param>
-        </member>
         <member name="T:System.ComponentModel.DateTimeConverter2">
             <summary>
             Improved implementation of <see cref="T:System.ComponentModel.DateTimeConverter"/> with intention to fix issue where 

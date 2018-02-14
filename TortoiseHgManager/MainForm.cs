@@ -52,6 +52,7 @@ namespace TortoiseHgManager
         private List<string> CommandLineQueue = null;
         private bool CloseAfterComplete = false;
         private int CommandLineStatus = 0;
+        private string OutputLog = string.Empty;
 
         #endregion
 
@@ -89,8 +90,9 @@ namespace TortoiseHgManager
             CommandLine.AddSwitch("/scan", "Check repositories for changes.");
 
             CommandLine.AddSwitch("/min", "Start application in minimized mode.");
-
             CommandLine.AddSwitch("/x", "Close application end of execution.");
+
+            CommandLine.AddSwitch("/log", "Capture and store execution logs to 'logFile'.", "logFile");
 
             CommandLineValid = CommandLine.ParseCommandLine();
 #if SIMULATION
@@ -107,6 +109,12 @@ namespace TortoiseHgManager
 
                 if (CommandLine.IsSwitchSet("/min")) this.WindowState = FormWindowState.Minimized;
                 if (CommandLine.IsSwitchSet("/x")) CloseAfterComplete = true;
+                if (CommandLine.IsSwitchSet("/log"))
+                {
+                    OutputLog = CommandLine.GetSwitchValue("/log");
+                    diagnosticsTextBox1.OutputFile = OutputLog;
+                    diagnosticsTextBox1.WriteToFile = true;
+                }
 
                 //Thread
                 int threadCount = 1;
