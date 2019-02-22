@@ -15,9 +15,10 @@ More details explanation on CodeProject: [TortoiseHg Manager Repository Verifica
 - .NET Framework 4.5.2
 
 ## Changes
-- V3.4.0: TcpAppServer Integration.
-          Updated error handling.
-		  Handle sub-repository and load repositories error.
+- V3.4.0:
+  - TcpAppServer Integration.
+  - Updated error handling.
+  - Handle sub-repository and load repositories error.
 - V3.3.0: Added output log to file.
 - V3.2.0: Added command line support.
 
