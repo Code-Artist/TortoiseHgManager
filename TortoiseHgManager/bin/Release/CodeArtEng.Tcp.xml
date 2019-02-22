@@ -1,0 +1,630 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CodeArtEng.Tcp</name>
+    </assembly>
+    <members>
+        <member name="T:CodeArtEng.Tcp.TcpAppClient">
+            <summary>
+            TCP Application Client
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpAppClient.ServerAppName">
+            <summary>
+            Return Server Application Name
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpAppClient.ServerAppVersion">
+            <summary>
+            Return Server Application Version
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpAppClient.Version">
+            <summary>
+            Return version of CodeArtEng.Tcp Assembly
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpAppClient.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpAppClient.#ctor(System.String,System.Int32)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="hostName"></param>
+            <param name="port"></param>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpAppClient.ExecuteTcpAppCommand(System.String,System.Int32)">
+            <summary>
+            Execute TCP Application Client Command.
+            </summary>
+            <param name="command"></param>
+            <param name="timeout"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpAppClient.ExecuteCommand(System.String,System.Int32)">
+            <summary>
+            Execute TCP Application Client Command.
+            </summary>
+            <param name="command"></param>
+            <param name="timeout"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpAppClient.Connect">
+            <summary>
+            Connect to TCP server and initialize TCP Application.
+            </summary>
+        </member>
+        <member name="T:CodeArtEng.Tcp.TcpAppServerExecuteDelegate">
+            <summary>
+            TCP Application Server execution callback
+            </summary>
+            <param name="sender"></param>
+        </member>
+        <member name="T:CodeArtEng.Tcp.TcpAppCommandStatus">
+            <summary>
+            TCP Application Command Status
+            </summary>
+        </member>
+        <member name="F:CodeArtEng.Tcp.TcpAppCommandStatus.OK">
+            <summary>
+            OK - No Error
+            </summary>
+        </member>
+        <member name="F:CodeArtEng.Tcp.TcpAppCommandStatus.BUSY">
+            <summary>
+            BUSY - Execution started, command need longer time to complete.
+            Use 'CheckStatus Command' to query execution status.
+            </summary>
+        </member>
+        <member name="F:CodeArtEng.Tcp.TcpAppCommandStatus.ERR">
+            <summary>
+            ERROR Raised
+            </summary>
+        </member>
+        <member name="T:CodeArtEng.Tcp.TcpAppInputCommand">
+            <summary>
+            TCP Application Server Received Command
+            </summary>
+            <remarks>Data structure to handle incoming command received by TCP Application Server.</remarks>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpAppInputCommand.Command">
+            <summary>
+            Command Handler
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpAppInputCommand.OutputMessage">
+            <summary>
+            Output message to be send to client.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpAppInputCommand.Status">
+            <summary>
+            Command execution status.
+            </summary>
+        </member>
+        <member name="T:CodeArtEng.Tcp.TcpAppCommandResult">
+            <summary>
+            TCP Application Command Execution Result
+            </summary>
+            <remarks>Used by TcpAppClient</remarks>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpAppCommandResult.ReturnMessage">
+            <summary>
+            Message returned from TCP Application Server
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpAppCommandResult.Status">
+            <summary>
+            Command execution status.
+            </summary>
+        </member>
+        <member name="T:CodeArtEng.Tcp.TcpAppCommand">
+            <summary>
+            TCP Application Registered Command
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpAppCommand.Keyword">
+            <summary>
+            Unique keyword
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpAppCommand.Arguments">
+            <summary>
+            Argument list.
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpAppCommand.#ctor(System.String,System.String,CodeArtEng.Tcp.TcpAppServerExecuteDelegate)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="keyword">Unique keyword</param>
+            <param name="executeCallback">Callback function</param>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpAppCommand.AddArgument(CodeArtEng.Tcp.TcpAppArgument)">
+            <summary>
+            Add argument to command.
+            </summary>
+            <param name="argument"></param>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpAppCommand.Argument(System.String)">
+            <summary>
+            Get Argument by Name, non case sensitive.
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpAppCommand.ResetArgumentsValue">
+            <summary>
+            Reset the value for each argument to default value.
+            </summary>
+        </member>
+        <member name="T:CodeArtEng.Tcp.TcpAppArgument">
+            <summary>
+            TCP Application Command Argument
+            </summary>
+            <seealso cref="T:CodeArtEng.Tcp.TcpAppCommand"/>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpAppArgument.Name">
+            <summary>
+            Argument Name
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpAppArgument.DefaultValue">
+            <summary>
+            Default value stored as String.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpAppArgument.IsOptional">
+            <summary>
+            Defined if argument is optional
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpAppArgument.Value">
+            <summary>
+            Argument's value for command execution. 
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpAppArgument.Description">
+            <summary>
+            Description about this argument
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpAppArgument.#ctor(System.String,System.String,System.Object,System.Boolean)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="name"></param>
+            <param name="description"></param>
+            <param name="defaultValue"></param>
+            <param name="isOptional"></param>
+        </member>
+        <member name="T:CodeArtEng.Tcp.TcpAppServer">
+            <summary>
+            TCP Application Server
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpAppServer.WelcomeMessage">
+            <summary>
+            Optional user defined Welcome message sent to client in "TcpAppInit" command.
+            Return system defined message if leave blank.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpAppServer.Version">
+            <summary>
+            Return version of CodeArtEng.Tcp Assembly
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpAppServer.#ctor(System.Windows.Forms.Form)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="mainForm">Main Form Handle</param>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpAppServer.Initialize">
+            <summary>
+            Perform user defined Initialization sequence when received "TcpAppInit" command from client.
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpAppServer.RegisterCommand(System.String,System.String,CodeArtEng.Tcp.TcpAppServerExecuteDelegate)">
+            <summary>
+            Register new command.
+            </summary>
+            <param name="command">Command keyword, single word.</param>
+            <param name="description">Short description of command.</param>
+            <param name="executeCallback">Command execution callback.</param>
+            <returns></returns>
+        </member>
+        <member name="T:CodeArtEng.Tcp.TcpClient">
+            <summary>
+            TCP Client Implementation
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpClient.SuspendDataReceivedEvent">
+            <summary>
+            Option to suspend DataReceived event trigger from base class.
+            Default is FALSE.
+            </summary>
+        </member>
+        <member name="E:CodeArtEng.Tcp.TcpClient.DataReceived">
+            <summary>
+            Occurs when incoming message is detected on input message buffer, cross thread event.
+            </summary>
+            <remarks>Event subscription had to be done before calling <see cref="M:CodeArtEng.Tcp.TcpClient.Connect"/>. 
+            A monitoring thread will be launched to watch <see cref="P:System.Net.Sockets.NetworkStream.DataAvailable"/> flag in function <see cref="M:CodeArtEng.Tcp.TcpClient.Connect"/> 
+            if and only if DataReceived event is subscribed.
+            </remarks>
+        </member>
+        <member name="E:CodeArtEng.Tcp.TcpClient.ConnectionStatusChanged">
+            <summary>
+            Occurs when connection is established / disconnected.
+            </summary>
+            <remarks>Handled by <see cref="P:CodeArtEng.Tcp.TcpClient.Connected"/> property.</remarks>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpClient.HostName">
+            <summary>
+            Server's IP Address / Host Name.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpClient.Port">
+            <summary>
+            TCP Server connection port.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpClient.ReadTimeout">
+            <summary>
+            Gets or sets the amount of time in miliseconds to wait for a valid response from TCP Server before read function return.
+            When set to -1, the read function will wait forever until response is received.
+            </summary>
+            <value>Default value = 1000 ms</value>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpClient.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpClient.#ctor(System.String,System.Int32)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="hostName">Server Host</param>
+            <param name="port">TCP Server Port</param>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpClient.Connected">
+            <summary>
+            Check if connection with Server stil active.
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpClient.Connect">
+            <summary>
+            Attempt to establish connection with server.
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpClient.Disconnect">
+            <summary>
+            Disconnect client from server.
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpClient.Write(System.String)">
+            <summary>
+            Write string to server.
+            </summary>
+            <param name="message"></param>
+            <remarks>Automatic check and establish connection with server.</remarks>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpClient.Write(System.Byte[])">
+            <summary>
+            Write byte array to server.
+            </summary>
+            <param name="dataBytes"></param>
+            <remarks>Automatic check and establish connection with server.</remarks>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpClient.FlushInputBuffer">
+            <summary>
+            Discard input buffer in TCP Stream.
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpClient.ReadBytes">
+            <summary>
+            Read byte array from server.
+            </summary>
+            <returns></returns>
+            <remarks>Automatic check and establish connection with server.</remarks>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpClient.ReadString">
+            <summary>
+            Read string from server.
+            </summary>
+            <returns></returns>
+            <remarks>Automatic check and establish connection with server.</remarks>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpClient.Dispose(System.Boolean)">
+            <summary>
+            Dispose object
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpClient.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="T:CodeArtEng.Tcp.TcpDataReceivedEventArgs">
+            <summary>
+            Data received event arguments, used in <see cref="T:CodeArtEng.Tcp.TcpAppClient"/>
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpDataReceivedEventArgs.Data">
+            <summary>
+            Recevied data in byte array
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpDataReceivedEventArgs.GetString">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CodeArtEng.Tcp.TcpServerEventArgs">
+            <summary>
+            Data class for <see cref="E:CodeArtEng.Tcp.TcpServer.ClientConnected"/> 
+            and <see cref="E:CodeArtEng.Tcp.TcpServer.ClientDisconnected"/> events.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpServerEventArgs.Client">
+            <summary>
+            Client object as <see cref="T:CodeArtEng.Tcp.TcpServerConnection"/>
+            </summary>
+        </member>
+        <member name="T:CodeArtEng.Tcp.TcpServerConnectEventArgs">
+            <summary>
+            Data class for <see cref="E:CodeArtEng.Tcp.TcpServer.ClientConnecting"/> event.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpServerConnectEventArgs.Accept">
+            <summary>
+            Option to accept / reject incoming connection.
+            Setting this property to FALSE reject incoming connection.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpServerConnectEventArgs.Client">
+            <summary>
+            Client object for incoming connection.
+            </summary>
+        </member>
+        <member name="T:CodeArtEng.Tcp.TcpServer">
+            <summary>
+            TCP Server implementation with multiple clients handling capability
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpServer.Name">
+            <summary>
+            Server name. Shown in <see cref="T:System.Diagnostics.Trace"/> log.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpServer.Port">
+            <summary>
+            TCP Port to listen for incoming connection.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpServer.IsServerStarted">
+            <summary>
+            Check if Server is started.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpServer.MessageDelimiter">
+            <summary>
+            Delimiter character to split incoming message to mulitple string package.
+            Each complete string which terminated with message delimiter will trigger 
+            the <see cref="E:CodeArtEng.Tcp.TcpServerConnection.MessageReceived"/> once.
+            </summary>
+            <remarks>
+            Recommended to set this property before server start.
+            Writing to this property will overwrite the <see cref="P:CodeArtEng.Tcp.TcpServerConnection.MessageDelimiter"/>  
+            for each <see cref="F:CodeArtEng.Tcp.TcpServer.ActiveConnections"/>.
+            </remarks>
+        </member>
+        <member name="E:CodeArtEng.Tcp.TcpServer.ServerStarted">
+            <summary>
+            Occurs after server started.
+            </summary>
+        </member>
+        <member name="E:CodeArtEng.Tcp.TcpServer.ServerStopped">
+            <summary>
+            Occurs after server stopped.
+            </summary>
+        </member>
+        <member name="E:CodeArtEng.Tcp.TcpServer.ClientConnecting">
+            <summary>
+            Occurs when incoming connection is detected.
+            </summary>
+        </member>
+        <member name="E:CodeArtEng.Tcp.TcpServer.ClientConnected">
+            <summary>
+            Occrus when incoming connection is accepted.
+            </summary>
+        </member>
+        <member name="E:CodeArtEng.Tcp.TcpServer.ClientDisconnected">
+            <summary>
+            Occurs when a connection is disconnected from server.
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpServer.#ctor">
+            <summary>
+            Create a TCP server, <see cref="P:CodeArtEng.Tcp.TcpServer.Name"/> defaulted as "TcpServer".
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpServer.#ctor(System.String)">
+            <summary>
+            Create a TCP server.
+            </summary>
+            <param name="name">Instance name.</param>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpServer.Dispose(System.Boolean)">
+            <summary>
+            Dispose function, do not call directly.
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpServer.Dispose">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpServer.Start(System.Int32)">
+            <summary>
+            Start server and listen to incoming connection from defined TCP Port.
+            </summary>
+            <param name="port">TCP Port to listen for incoming connection.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">Port number is beyond the range of [0 - 65535] </exception>
+            <remarks>
+            Calling this function has no effect once server is started.
+            </remarks>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpServer.Stop">
+            <summary>
+            Stop the TCP server.
+            </summary>
+            <remarks>
+            Calling this function had no effect once server is stopped.
+            </remarks>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpServer.Clients">
+            <summary>
+            Return this list of active clients.
+            Reading from this property will return a list of cloned active clients.
+            </summary>
+        </member>
+        <member name="T:CodeArtEng.Tcp.TcpServerDataEventArgs">
+            <summary>
+            Data class for <see cref="E:CodeArtEng.Tcp.TcpServerConnection.BytesReceived"/> event.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpServerDataEventArgs.Client">
+            <summary>
+            Client object.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpServerDataEventArgs.Data">
+            <summary>
+            Incoming bytes received
+            </summary>
+        </member>
+        <member name="T:CodeArtEng.Tcp.MessageReceivedEventArgs">
+            <summary>
+            Data class for <see cref="E:CodeArtEng.Tcp.TcpServerConnection.MessageReceived"/> event.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.MessageReceivedEventArgs.Client">
+            <summary>
+            Client object.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.MessageReceivedEventArgs.ReceivedMessage">
+            <summary>
+            Incoming message.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.MessageReceivedEventArgs.ReceivedBytes">
+            <summary>
+            Incoming message in byte array.
+            </summary>
+        </member>
+        <member name="T:CodeArtEng.Tcp.TcpServerConnection">
+            <summary>
+            Wrapper class for <see cref="T:CodeArtEng.Tcp.TcpClient"/> connection.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpServerConnection.ClientIPAddress">
+            <summary>
+            IP address for connected client.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpServerConnection.MessageDelimiter">
+            <summary>
+            Delimiter character to split incoming message to mulitple string package.
+            Each complete string which terminated with message delimiter will trigger 
+            the <see cref="E:CodeArtEng.Tcp.TcpServerConnection.MessageReceived"/> once.
+            </summary>
+            <remarks>The value is assigned by <see cref="T:CodeArtEng.Tcp.TcpServer"/></remarks>
+        </member>
+        <member name="E:CodeArtEng.Tcp.TcpServerConnection.ClientDisconnected">
+            <summary>
+            Occurs when client is disconnected from server.
+            </summary>
+        </member>
+        <member name="E:CodeArtEng.Tcp.TcpServerConnection.BytesReceived">
+            <summary>
+            Occurs when one or more bytes is sent from client.
+            </summary>
+        </member>
+        <member name="E:CodeArtEng.Tcp.TcpServerConnection.MessageReceived">
+            <summary>
+            Occurs when a message terminated with <see cref="P:CodeArtEng.Tcp.TcpServerConnection.MessageDelimiter"/> is received.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Tcp.TcpServerConnection.Connected">
+            <summary>
+            Get client connection status.
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpServerConnection.Dispose(System.Boolean)">
+            <summary>
+            Dispose function, do not call directly.
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpServerConnection.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpServerConnection.Close">
+            <summary>
+            Close client connection
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpServerConnection.WriteToClient(System.String)">
+            <summary>
+            Write string to client.
+            </summary>
+            <param name="message">Message string</param>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpServerConnection.WriteLineToClient(System.String)">
+            <summary>
+            Write string to client terminate with \r\n [0x0D 0x0A]
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpServerConnection.WriteToClient(System.Byte[])">
+            <summary>
+            Write byte array to client.
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="M:CodeArtEng.Tcp.TcpServerConnection.FlushLineBuffer">
+            <summary>
+            Clear internal message buffer.
+            </summary>
+            <remarks>
+            Internal message buffer store and build message from 
+            receive bytes until <see cref="P:CodeArtEng.Tcp.TcpServerConnection.MessageDelimiter"/> is 
+            detected. 
+            </remarks>
+        </member>
+        <member name="T:System.Net.Sockets.TcpClientExtension">
+            <summary>
+            TCP Client Helper Class.
+            </summary>
+        </member>
+        <member name="M:System.Net.Sockets.TcpClientExtension.IsConnected(System.Net.Sockets.TcpClient)">
+            <summary>
+            Extension method to check if TCP client is connected.
+            </summary>
+            <param name="sender"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

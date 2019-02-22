@@ -206,6 +206,61 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:CodeArtEng.Controls.CommandMacroEditor">
+            <summary>
+            Command line editor with macro insertion capability.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Controls.CommandMacroEditor.MacroPrefix">
+            <summary>
+            String added before macro label.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Controls.CommandMacroEditor.MacroPostfix">
+            <summary>
+            String added after macro label.
+            </summary>
+        </member>
+        <member name="P:CodeArtEng.Controls.CommandMacroEditor.Command">
+            <summary>
+            Input Command
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Controls.CommandMacroEditor.#ctor(System.String)">
+            <summary>
+            Constructor. Initiate new instance
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Controls.CommandMacroEditor.AddMacroPair(System.String,System.String)">
+            <summary>
+            Add Macro Key Value Pair
+            </summary>
+            <param name="macroName"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:CodeArtEng.Controls.CommandMacroEditor.OnShown(System.EventArgs)">
+            <summary>
+            Raise the Form.Shown event.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="F:CodeArtEng.Controls.CommandMacroEditor.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:CodeArtEng.Controls.CommandMacroEditor.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:CodeArtEng.Controls.CommandMacroEditor.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
         <member name="T:CodeArtEng.Controls.LabeledTextBox">
             <summary>
             File and folder selection panel base.
@@ -358,6 +413,12 @@
         <member name="M:CodeArtEng.Controls.HintedTextBox.OnKeyDown(System.Windows.Forms.KeyEventArgs)">
             <summary>
             TextBox Key Down event.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:CodeArtEng.Controls.HintedTextBox.OnKeyUp(System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            Raise the Control.KeyUp Event.
             </summary>
             <param name="e"></param>
         </member>
@@ -1072,6 +1133,12 @@
             <summary>
             Constructor
             </summary>
+        </member>
+        <member name="M:CodeArtEng.Controls.ToolStripMruList.OnDropDownShow(System.EventArgs)">
+            <summary>
+            Raise in response to ToolStripDropDownItem.ShowDropDown() method.
+            </summary>
+            <param name="e"></param>
         </member>
         <member name="P:CodeArtEng.Controls.ToolStripMruList.MruListSize">
             <summary>

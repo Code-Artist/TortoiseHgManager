@@ -40,14 +40,17 @@
     <ApplicationIcon>TortoiseManager.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CodeArtEng.Controls, Version=2.1.11.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeArtEng.Controls.2.1.11\lib\CodeArtEng.Controls.dll</HintPath>
+    <Reference Include="CodeArtEng.Controls, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodeArtEng.Controls.2.2.0\lib\net452\CodeArtEng.Controls.dll</HintPath>
     </Reference>
     <Reference Include="CodeArtEng.Diagnostics, Version=3.1.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CodeArtEng.Diagnostics.3.1.5\lib\CodeArtEng.Diagnostics.dll</HintPath>
     </Reference>
-    <Reference Include="CodeArtEng.Extensions, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeArtEng.Extensions.1.2.0\lib\CodeArtEng.Extensions.dll</HintPath>
+    <Reference Include="CodeArtEng.Extensions, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodeArtEng.Extensions.1.3.0.0\lib\net40\CodeArtEng.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="CodeArtEng.Tcp, Version=1.6.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodeArtEng.Tcp.1.6.1.0\lib\net40\CodeArtEng.Tcp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

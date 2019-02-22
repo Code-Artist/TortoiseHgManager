@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Diagnostics;
 using System.Management;
 using System.ComponentModel;
@@ -117,7 +116,7 @@ namespace TortoiseHgManager
                 processInfo.RedirectStandardOutput = true;
                 processInfo.RedirectStandardError = true;
 
-                Trace.WriteLine(Name + ": Executing: " + processInfo.FileName + " " + processInfo.Arguments);
+                if(TraceLogEnabled) Trace.WriteLine(Name + ": Executing: " + processInfo.FileName + " " + processInfo.Arguments);
                 ProcessHandler = Process.Start(processInfo);
                 ProcessHandler.OutputDataReceived += new DataReceivedEventHandler(process_OutputDataReceived);
                 ProcessHandler.ErrorDataReceived += new DataReceivedEventHandler(process_ErrorDataReceived);

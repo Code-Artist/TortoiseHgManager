@@ -69,9 +69,10 @@ namespace TortoiseHgManager
                 reader.MoveToContent();
                 while (reader.Read())
                 {
+                    if (reader.NodeType == XmlNodeType.EndElement) continue;
                     if (reader.Name == "repo")
                     {
-                        string rootName = reader.GetAttribute("root").Replace('/', '\\');
+                        string rootName = reader.GetAttribute("root")?.Replace('/', '\\');
                         Repositories.Add(new TortoiseHgRepository()
                         {
                             Group = group,
@@ -88,7 +89,7 @@ namespace TortoiseHgManager
                     }
                 }//while
             }//using
-            Trace.WriteLine(Repositories.Count().ToString() + " repositories loaded.");
+            Trace.WriteLineIf(TraceLogEnabled, Repositories.Count().ToString() + " repositories loaded.");
         }
 
         public void ClearRepositoriesError()
@@ -128,15 +129,15 @@ namespace TortoiseHgManager
 
         private void RaiseTortoiseHgException(string operation, string repositoryPath, string messages)
         {
-            string errMsg = operation + " Failed: " + repositoryPath + "\n" + "ERROR: " + messages;
+            string errMsg = "ERROR: Operation Failed: " + Path.GetFileName(repositoryPath) + " " + messages;
             Trace.WriteLine(errMsg);
             throw new TortoiseHgException(errMsg);
         }
 
         public void VerifyRepository(string repositoryPath)
         {
-            Trace.WriteLine("");
-            Trace.WriteLine("Verifying " + repositoryPath + "...");
+            Trace.WriteLineIf(TraceLogEnabled, "");
+            Trace.WriteLineIf(TraceLogEnabled, "Verifying " + repositoryPath + "...");
             repositoryPath = Path.GetFullPath(repositoryPath);
             if (!Directory.Exists(repositoryPath)) RaiseDirectoryNotFoundException(repositoryPath);
 
@@ -144,13 +145,13 @@ namespace TortoiseHgManager
             ProcessResult result = Execute();
 
             if (result.ExitCode != 0) RaiseTortoiseHgException("Verification", repositoryPath, String.Join("\r\n", result.Output));
-            else Trace.WriteLine(repositoryPath + " verified.");
+            else Trace.WriteLineIf(TraceLogEnabled, repositoryPath + " verified.");
         }
 
         public void UpdateRepository(string repositoryPath)
         {
-            Trace.WriteLine("");
-            Trace.WriteLine("Updating " + repositoryPath + "...");
+            Trace.WriteLineIf(TraceLogEnabled, "");
+            Trace.WriteLineIf(TraceLogEnabled, "Updating " + repositoryPath + "...");
             repositoryPath = Path.GetFullPath(repositoryPath);
             if (!Directory.Exists(repositoryPath)) RaiseDirectoryNotFoundException(repositoryPath);
 
@@ -162,7 +163,7 @@ namespace TortoiseHgManager
             Directory.SetCurrentDirectory(workingPath);
 
             if (result.ExitCode != 0) RaiseTortoiseHgException("Update", repositoryPath, String.Join("\\r\n", result.Output));
-            Trace.WriteLine(repositoryPath + " OK.");
+            Trace.WriteLineIf(TraceLogEnabled, repositoryPath + " OK.");
         }
 
         private void VerifyExtensionActivated(string repositoryPath, string extension)
@@ -182,8 +183,8 @@ namespace TortoiseHgManager
         {
             VerifyExtensionActivated(repositoryPath, "convert");
 
-            Trace.WriteLine("");
-            Trace.WriteLine("Fixing " + repositoryPath + "...");
+            Trace.WriteLineIf(TraceLogEnabled, "");
+            Trace.WriteLineIf(TraceLogEnabled, "Fixing " + repositoryPath + "...");
             repositoryPath = Path.GetFullPath(repositoryPath);
             if (!Directory.Exists(repositoryPath)) RaiseDirectoryNotFoundException(repositoryPath);
 
@@ -206,13 +207,13 @@ namespace TortoiseHgManager
             CopyFolder(newHg, oldHg);
             DeleteFolder(tempRepo);
 
-            Trace.WriteLine(repositoryPath + " Fixed.");
+            Trace.WriteLineIf(TraceLogEnabled, repositoryPath + " Fixed.");
         }
 
         public void PullIncomingChanges(string repositoryPath)
         {
-            Trace.WriteLine("");
-            Trace.WriteLine("Pulling to " + repositoryPath);
+            Trace.WriteLineIf(TraceLogEnabled, "");
+            Trace.WriteLineIf(TraceLogEnabled, "Pulling to " + repositoryPath);
             repositoryPath = Path.GetFullPath(repositoryPath);
             if (!Directory.Exists(repositoryPath)) RaiseDirectoryNotFoundException(repositoryPath);
 
@@ -220,13 +221,13 @@ namespace TortoiseHgManager
             ProcessResult result = Execute();
 
             if (result.ExitCode != 0) RaiseTortoiseHgException("Pull Changes", repositoryPath, String.Join("\r\n", result.Output));
-            Trace.WriteLine("Pull completed.");
+            Trace.WriteLineIf(TraceLogEnabled, "Pull completed.");
         }
 
         public void PushOutgoingChanges(string repositoryPath)
         {
-            Trace.WriteLine("");
-            Trace.WriteLine("Pushing from " + repositoryPath);
+            Trace.WriteLineIf(TraceLogEnabled, "");
+            Trace.WriteLineIf(TraceLogEnabled, "Pushing from " + repositoryPath);
             repositoryPath = Path.GetFullPath(repositoryPath);
             if (!Directory.Exists(repositoryPath)) RaiseDirectoryNotFoundException(repositoryPath);
 
@@ -234,12 +235,12 @@ namespace TortoiseHgManager
             ProcessResult result = Execute();
 
             if (result.ExitCode != 0) RaiseTortoiseHgException("Push Changes", repositoryPath, String.Join("\r\n", result.Output));
-            Trace.WriteLine("Push completed.");
+            Trace.WriteLineIf(TraceLogEnabled, "Push completed.");
         }
 
-        public int CheckModifiedRepository(string repositoryPath)
+        public void CheckModifiedRepository(string repositoryPath)
         {
-            Trace.WriteLine("Checking " + repositoryPath + "...");
+            Trace.WriteLineIf(TraceLogEnabled, "Checking " + repositoryPath + "...");
             Arguments = "--repository \"" + repositoryPath + "\" status";
             ProcessResult result = Execute();
 
@@ -249,13 +250,11 @@ namespace TortoiseHgManager
                 {
                     if (!line.StartsWith("?"))
                     {
-                        Trace.WriteLine(repositoryPath + " contains uncommitted changes.");
-                        return -1;
+                        RaiseTortoiseHgException("Check For Changes", repositoryPath, "Repository contains uncommitted changes.");
                     }
                 }
             }
-            Trace.WriteLine(repositoryPath + " have no changes.");
-            return 0;
+            Trace.WriteLineIf(TraceLogEnabled, repositoryPath + " have no changes.");
         }
 
         #endregion  
